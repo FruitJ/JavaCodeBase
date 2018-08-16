@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="原生js,window.name跨域,谨心">
+    <meta name="description" content="window.name跨域">
+    <title>window.name跨域</title>
+</head>
+<body>
+
+<button>window.name跨域</button>
+
+<script>
+  let data = "";
+  ~(function () {
+    // 获取目标元素
+    let btn = document.getElementsByTagName("button")[0];
+    // 为btn绑定点击事件
+    btn.addEventListener('click', function() {
+        // 生成iframe标签
+        let iframe = document.createElement("iframe");
+        // 将iframe添加进DOM树中
+        iframe = document.body.appendChild(iframe);
+        iframe.setAttribute("src", "http://localhost:8080/AjaxCrossDomain/index.jsp");
+        iframe.setAttribute("onload", "winData()");
+        iframe.setAttribute("style", "display: none;");
+    }, false);
+  })();
+
+  function winData() {
+      let iframe = document.getElementsByTagName("iframe")[0];
+      iframe.src = "about:blank";
+      iframe.onload = function() {
+          data = iframe.contentWindow.name;
+          // 删除iframe节点
+          document.body.removeChild(iframe);
+          console.log(data);
+          // 你的操作 ...
+
+      };
+
+
+
+
+  }
+
+</script>
+</body>
+</html>

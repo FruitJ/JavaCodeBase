@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="原生js,Jsonp跨域,谨心">
+    <meta name="description" content="Jsonp跨域">
+    <title>Jsonp跨域</title>
+</head>
+<body>
+
+<button>Jsonp跨域</button>
+
+<script>
+    ~(function() {
+        // 获取目标元素
+        let btn  = document.getElementsByTagName("button")[0];
+        // 为btn绑定点击事件
+        btn.addEventListener('click', function() {
+            // 创建script标签碎片
+            let script = document.createElement("script");
+            // 将script碎片添加进DOM树
+            script = document.body.appendChild(script);
+            // 为生成的script标签设置src属性(此刻便发送请求了)
+            script.setAttribute("src", "http://localhost:8080/AjaxCrossDomain/dealJsonp?callback=dealResponse");
+            // 移除script节点
+            document.body.removeChild(script);
+        }, false);
+
+    })();
+    // 回调函数
+    function dealResponse(res) {
+        console.log(res);
+    }
+
+
+
+</script>
+</body>
+</html>
