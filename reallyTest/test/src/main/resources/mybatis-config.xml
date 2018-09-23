@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC  
+    "-//mybatis.org//DTD Config 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+    
+<!-- mybatis环境配置 -->
+<configuration>
+	
+	<!-- 配置别名适配器 -->
+	<typeAliases>
+		<typeAlias type="com.YHStudio.flow.entities.CustomEntity" alias="customEnt" />
+	</typeAliases>
+	
+	<!-- 指明 Mapper 路径 -->
+	
+	<mappers>
+		<mapper resource="/Mapper.xml" />
+	</mappers>
+</configuration>
+    

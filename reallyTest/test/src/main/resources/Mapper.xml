@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 配置 mapper -->
+ <mapper namespace="com.YHStudio.flow.dao.Mapper">
+ 
+ 	<parameterMap type="customEnt" id="customEntMap">
+ 		<parameter property="id" />
+ 		<parameter property="userName" />
+ 		<parameter property="userAge" />
+ 		<parameter property="userSex" />
+ 		<parameter property="userPhone" />
+ 		<parameter property="userLevel" />
+ 		<parameter property="e_mail" />
+ 		<parameter property="userPwd" />
+ 	</parameterMap>
+ 	<insert id="addCustomInfo" parameterMap="customEntMap" useGeneratedKeys="true" keyProperty="id">
+ 		insert into custom(cus_name, cus_age, cus_sex, cus_phone, cus_level, cus_e_mail, cus_pwd) values(#{userName},#{userAge},#{userSex},#{userPhone},#{userLevel},#{e_mail},#{userPwd})
+ 	</insert>
+ 	<resultMap type="customEnt" id="customIsExists">
+ 		<result column="id" property="id" />
+ 		<result column="cus_name" property="userName" />
+ 		<result column="cus_age" property="userAge" />
+ 		<result column="cus_sex" property="userSex" />
+ 		<result column="cus_phone" property="userPhone" />
+ 		<result column="cus_level" property="userLevel" />
+ 		<result column="cus_e_mail" property="e_mail" />
+ 		<result column="cus_pwd" property="userPwd" />
+ 	</resultMap>
+	<select id="queryCustomIsState" resultMap="customIsExists">
+		select * from custom where cus_phone = #{userPhone}
+	</select>
+	
+	<select id="queryCustomInfo" resultMap="customIsExists">
+		select * from custom where cus_phone = #{userPhone} and cus_pwd = #{userPwd}
+	</select>
+	
+	<select id="queryCookieOfInfo" resultMap="customIsExists">
+		select * from custom where cus_phone = #{userPhone} and cus_name = #{userName}
+	</select>
+	
+	<select id="queryTableIsExists" resultType="string">
+		SELECT t.table_name FROM information_schema.TABLES t WHERE t.TABLE_SCHEMA =#{databaseName} AND t.TABLE_NAME =#{tabName};
+	</select>
+	
+	<update id="createCusGoodsTab">
+		create table ${tabName}(cus_phone_id nvarchar(20) not null, goodsName nvarchar(20) not null, buyTime datetime not null, price float not null)
+	</update>
+	
+	<insert id="addShopInfo">
+		 insert into ${list[0]}(cus_phone_id, goodsName, buyTime, price) values(#{list[1]}, #{list[2]}, #{list[3]}, #{list[4]})
+	</insert>
+	
+ </mapper>

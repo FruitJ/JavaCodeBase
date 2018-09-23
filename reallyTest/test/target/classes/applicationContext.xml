@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+<!-- 引入外部文件 -->
+<context:property-placeholder location="classpath:jdbc.properties" />
+
+<!-- 配置数据源 -->
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<property name="driverClassName" value="${jdbc.driver}" />
+	<property name="url" value="${jdbc.url}" />
+	<property name="username" value="${jdbc.userName}" />
+	<property name="password" value="${jdbc.userPwd}" />
+</bean>
+
+<!-- 配置会话工厂 -->
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<property name="dataSource" ref="dataSource" />
+	<property name="configLocation" value="classpath:mybatis-config.xml" />
+</bean>
+
+<!-- 配置mybatis动态实现工厂 -->
+<bean id="achieve" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.YHStudio.flow.dao.Mapper" />
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+
+<!-- 配置事务驱动 -->
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<property name="dataSource" ref="dataSource"></property>
+</bean>
+
+<!-- 启动切点注解驱动 -->
+<aop:aspectj-autoproxy />
+
+<!-- 注册通知类 -->
+<bean id="authenticationAspect" class="com.YHStudio.flow.aspect.AuthenticationAspect"></bean>
+<bean id="logAspect" class="com.YHStudio.flow.aspect.LogAspect"></bean>
+
+</beans>
